@@ -1,0 +1,8 @@
+<form action="{{request.route_url('ziggurat.routes.sign_in')}}" method="post">
+    <!-- "came_from", "password" and "login" can all be overwritten -->
+    <input type="hidden" value="OPTIONAL" name="came_from" id="came_from">
+    <!-- in the example above we changed the value of "login" to "username" -->
+    <input type="text" value="" name="login" <!-- change to name="username" if required --> >
+    <input type="password" value="" name="password">
+    <input type="submit" value="Sign In" name="submit" id="submit">
+</form>
