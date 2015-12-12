@@ -23,5 +23,3 @@ pyramid_ziggurat_auth_demo/static/pyramid-16x16.png
 pyramid_ziggurat_auth_demo/static/pyramid.png
 pyramid_ziggurat_auth_demo/static/theme.css
 pyramid_ziggurat_auth_demo/static/theme.min.css
-pyramid_ziggurat_auth_demo/templates/login.mako
-pyramid_ziggurat_auth_demo/templates/mytemplate.pt
