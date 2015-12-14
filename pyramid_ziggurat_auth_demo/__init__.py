@@ -8,9 +8,8 @@ from ziggurat_foundations.models import groupfinder
 
 from .models import (
     DBSession,
-    Base,
+    Base
     )
-
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.

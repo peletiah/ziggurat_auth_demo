@@ -49,6 +49,13 @@ log = logging.getLogger(__name__)
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
+#ziggurat_foundations.models.DBSession = DBSession
+
+def get_session_callable(request):
+   # if DBSession is located at "request.db_session"
+   return DBSession
+   # or if DBSession was located at "request.db"
+  #return request.db
 
 class Group(GroupMixin, Base):
     pass
@@ -90,7 +97,11 @@ class RootFactory(object):
         # request.user object from cookbook recipie
         if request.user:
             for perm in request.user.permissions:
+                log.debug('\n\nPERMISSIONS\n\n')
                 self.__acl__.append((Allow, perm.user.user_name, perm.perm_name,))
+                log.debug(self.__acl__)
+                log.debug('\n\nPERMISSIONS\n\n')
+
 
 class ResourceFactory(object):
     def __init__(self, request):
