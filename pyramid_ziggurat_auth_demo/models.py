@@ -43,6 +43,7 @@ from ziggurat_foundations.models.user_group import UserGroupMixin
 from ziggurat_foundations.models.user_permission import UserPermissionMixin
 from ziggurat_foundations.models.user_resource_permission import UserResourcePermissionMixin
 from ziggurat_foundations import ziggurat_model_init
+from ziggurat_foundations.permissions import permission_to_pyramid_acls
 
 import logging
 log = logging.getLogger(__name__)
@@ -96,9 +97,13 @@ class RootFactory(object):
         if request.user:
             for perm in request.user.permissions:
                 log.debug('\n\nPERMISSIONS\n\n')
-                self.__acl__.append((Allow, perm.user.user_name, perm.perm_name,))
+                self.__acl__.append((Allow, perm.user.id, perm.perm_name,))
                 log.debug(self.__acl__)
                 log.debug('\n\nPERMISSIONS\n\n')
+            # or you could do
+            # for outcome, perm_user, perm_name in permission_to_pyramid_acls(
+            #         request.user.permissions):
+            #     self.__acl__.append((outcome, perm_user, perm_name))
 
 
 class ResourceFactory(object):
@@ -116,6 +121,6 @@ class ResourceFactory(object):
             self.__acl__ = self.resource.__acl__
             # append permissions that current user may have for this context resource
             for perm in self.resource.perms_for_user(request.user):
-                self.__acl__.append((Allow, perm.user.user_name, perm.perm_name,))
+                self.__acl__.append((Allow, perm.user.id, perm.perm_name,))
 
 
