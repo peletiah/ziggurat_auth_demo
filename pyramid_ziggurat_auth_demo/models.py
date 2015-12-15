@@ -50,13 +50,7 @@ log = logging.getLogger(__name__)
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
-#ziggurat_foundations.models.DBSession = DBSession
-
-def get_session_callable(request):
-   # if DBSession is located at "request.db_session"
-   return DBSession
-   # or if DBSession was located at "request.db"
-  #return request.db
+ziggurat_foundations.models.DBSession = DBSession
 
 class Group(GroupMixin, Base):
     pass
@@ -95,15 +89,12 @@ class RootFactory(object):
         # general page factory - append custom non resource permissions
         # request.user object from cookbook recipie
         if request.user:
-            for perm in request.user.permissions:
-                log.debug('\n\nPERMISSIONS\n\n')
-                self.__acl__.append((Allow, perm.user.id, perm.perm_name,))
-                log.debug(self.__acl__)
-                log.debug('\n\nPERMISSIONS\n\n')
+            #for perm in request.user.permissions:
+            #    self.__acl__.append((Allow, perm.user.id, perm.perm_name,))
             # or you could do
-            # for outcome, perm_user, perm_name in permission_to_pyramid_acls(
-            #         request.user.permissions):
-            #     self.__acl__.append((outcome, perm_user, perm_name))
+            for outcome, perm_user, perm_name in permission_to_pyramid_acls(
+                    request.user.permissions):
+                self.__acl__.append((outcome, perm_user, perm_name))
 
 
 class ResourceFactory(object):
@@ -120,7 +111,9 @@ class ResourceFactory(object):
             # append basic resource acl that gives all permissions to owner
             self.__acl__ = self.resource.__acl__
             # append permissions that current user may have for this context resource
-            for perm in self.resource.perms_for_user(request.user):
-                self.__acl__.append((Allow, perm.user.id, perm.perm_name,))
+            permissions = self.resource.perms_for_user(request.user)
+            for outcome, perm_user, perm_name in permission_to_pyramid_acls(
+                    permissions):
+                self.__acl__.append((outcome, perm_user, perm_name,))
 
 
