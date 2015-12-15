@@ -70,8 +70,7 @@ class GroupResourcePermission(GroupResourcePermissionMixin, Base):
     pass
 
 class Resource(ResourceMixin, Base):
-    # ... your own properties....
-    pass
+    __possible_permissions__ = ('root', 'alter_users', 'custom1','foo','read')
 
 class UserPermission(UserPermissionMixin, Base):
     pass
@@ -80,8 +79,7 @@ class UserResourcePermission(UserResourcePermissionMixin, Base):
     pass
 
 class User(UserMixin, Base):
-    # ... your own properties....
-    pass
+    __possible_permissions__ = ('root', 'alter_users', 'custom1','foo','read')
 
 class ExternalIdentity(ExternalIdentityMixin, Base):
     pass
